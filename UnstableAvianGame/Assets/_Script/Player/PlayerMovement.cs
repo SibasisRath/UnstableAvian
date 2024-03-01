@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     /*[SerializeField] private GameObject player;*/
     private Camera mainCamera;
+    [SerializeField] private Transform parentTransform;
     [SerializeField] private float playerSpeed;
     private float currentSpeed;
     private float verticalInput;
@@ -28,6 +29,11 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         Movement();
+        if (PlayerStateManager.PlayerState == PlayerStates.Exploding && Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("You saved.");
+            PlayerStateManager.PlayerState = PlayerStates.Alive;
+        }
     }
 
     private void Movement()

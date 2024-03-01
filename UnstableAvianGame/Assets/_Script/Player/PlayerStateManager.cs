@@ -5,11 +5,11 @@ using UnityEngine.Events;
 
 public class PlayerStateManager : MonoBehaviour
 {
-    //private static PlayerStateManager instance;
-    private PlayerStates playerState;
+    private static PlayerStateManager instance;
+    private static PlayerStates playerState;
 
-    //public static PlayerStateManager Instance { get => instance; set => instance = value; }
-    public PlayerStates PlayerState { get => playerState; set => playerState = value; }
+    public static PlayerStateManager Instance { get => instance; set => instance = value; }
+    public static PlayerStates PlayerState { get => playerState; set => playerState = value; }
 
 
 

@@ -9,20 +9,18 @@ public class ExplosionManager : MonoBehaviour
     [SerializeField] private float bigExplosionRange;
     [SerializeField] private int explosionDelay;
 
-/*    private bool canPerformExplosion;*/
 
 
     // Start is called before the first frame update
     void Start()
     {
-        //canPerformExplosion = false;
 
-        InvokeRepeating(nameof(ExplosionProcess), 5, 10);
+
+        InvokeRepeating(nameof(ExplosionProcess), 10, 15);
     }
 
     public void ExplosionProcess()
     {
-        //canPerformExplosion = true;
         Explosions explosionType = RandomExplosionGenerator();
         Debug.Log(explosionType.ToString());
         StartCoroutine(Explode(explosionType));
@@ -30,6 +28,7 @@ public class ExplosionManager : MonoBehaviour
 
     private Explosions RandomExplosionGenerator()
     {
+        PlayerStateManager.PlayerState = PlayerStates.Exploding;
         int randomExplosionNumber = (int)(Random.Range(1,100));
         Explosions explosionType;
 
@@ -50,31 +49,36 @@ public class ExplosionManager : MonoBehaviour
 
     private IEnumerator Explode(Explosions explosion)
     {
-        int totalDamage = 0;
-        RaycastHit hit = new RaycastHit();
-
-        if (explosion == Explosions.Big && Physics.Raycast(transform.position, Vector3.down, out hit, bigExplosionRange, obstacle ))
-        {
-            totalDamage += 2;
-            explosion = Explosions.Medium;
-        }
-
-
-        if (explosion == Explosions.Medium && Physics.Raycast(transform.position, Vector3.down, out hit, midExplosionRange, obstacle))
-        {
-            totalDamage += 2;
-            explosion = Explosions.Small;
-        }
-
-
-        if (explosion == Explosions.Small && Physics.Raycast(transform.position, Vector3.down, out hit, smallExplosionRange, obstacle))
-        {
-            totalDamage += 2;
-        }
-
-
         yield return new WaitForSeconds(3);
+
+        if (PlayerStateManager.PlayerState == PlayerStates.Exploding)
+        {
+            int totalDamage = 0;
+            RaycastHit hit = new RaycastHit();
+
+            if (explosion == Explosions.Big && Physics.Raycast(transform.position, Vector3.down, out hit, bigExplosionRange, obstacle))
+            {
+                totalDamage += 2;
+                explosion = Explosions.Medium;
+            }
+
+
+            if (explosion == Explosions.Medium && Physics.Raycast(transform.position, Vector3.down, out hit, midExplosionRange, obstacle))
+            {
+                totalDamage += 2;
+                explosion = Explosions.Small;
+            }
+
+
+            if (explosion == Explosions.Small && Physics.Raycast(transform.position, Vector3.down, out hit, smallExplosionRange, obstacle))
+            {
+                totalDamage += 2;
+            }
+            Debug.Log($"explosion happened.\ntotal damage {totalDamage}");
+
+        }
+
       
-        Debug.Log($"total damage {totalDamage}");
+       
     }
 }
