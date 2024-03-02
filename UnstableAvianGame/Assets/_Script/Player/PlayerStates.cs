@@ -1,7 +1,7 @@
 public enum PlayerStates 
 {
     Alive,
-    Exploding,
     Respawnning,
+    Exploding,
     Dead
 }
