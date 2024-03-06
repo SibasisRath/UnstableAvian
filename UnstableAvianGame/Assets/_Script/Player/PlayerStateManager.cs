@@ -16,7 +16,7 @@ public class PlayerStateManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GameManagerScript.GameState == GameStates.Running)
+        if (GameManagerScript.Instance.GameState == GameStates.Running)
         {
             PlayerState = PlayerStates.Alive;
             Debug.Log("player Started playing");

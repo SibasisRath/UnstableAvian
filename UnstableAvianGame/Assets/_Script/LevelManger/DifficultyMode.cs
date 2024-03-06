@@ -1,4 +1,4 @@
-public enum DificultyMode
+public enum DifficultyMode
 {
     Tutorial,
     Easy,
