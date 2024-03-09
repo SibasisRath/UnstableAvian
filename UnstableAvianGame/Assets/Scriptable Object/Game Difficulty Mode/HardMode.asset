@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3cf0037d9efdd4594e8115d26b9896, type: 3}
   m_Name: HardMode
   m_EditorClassIdentifier: 
-  difficultyMode: 3
+  difficultyMode: 2
   speed: 100
+  themeLength: 7
   powerBoosts: 5
-  Obstacles: 7
+  obstacles: 6
+  scoreToInitiate: 1500

@@ -19,7 +19,6 @@ public class PlayerStateManager : MonoBehaviour
         if (GameManagerScript.Instance.GameState == GameStates.Running)
         {
             PlayerState = PlayerStates.Alive;
-            Debug.Log("player Started playing");
         }
     }
 

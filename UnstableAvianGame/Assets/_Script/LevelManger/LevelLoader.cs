@@ -12,16 +12,8 @@ public class LevelLoader : MonoBehaviour
         {
             case LevelStates.Completed:
             case LevelStates.Unlocked:
-                
-                if (level == DifficultyMode.Tutorial)
-                {
-                    sceneBuildIndex = 1;
-                }
-                else if (level == DifficultyMode.Easy || level == DifficultyMode.Medium || level == DifficultyMode.Hard)
-                {   
-                    sceneBuildIndex = 2;
-                }
-                GameManagerScript.Instance.CurrrentMode = (DifficultyMode)level;
+                sceneBuildIndex = 1;
+                GameManagerScript.Instance.CurrentMode = (DifficultyMode)level;
                 SceneManager.LoadScene(sceneBuildIndex);
                 break;
             case LevelStates.Locked:

@@ -3,7 +3,6 @@ using UnityEngine;
 public class LevelManagerScript : MonoBehaviour
 {
     private static LevelManagerScript instance;
-    private const DifficultyMode defaultTutorialLevel = DifficultyMode.Tutorial;
     private const DifficultyMode defaulEasyLevel = DifficultyMode.Easy;
 
     public static LevelManagerScript Instance { get { return instance; } }
@@ -22,13 +21,12 @@ public class LevelManagerScript : MonoBehaviour
     }
     private void Start()
     {
-        SetLevelStates(defaultTutorialLevel, LevelStates.Unlocked);
         SetLevelStates(defaulEasyLevel, LevelStates.Unlocked);
     }
 
     public void OnLevelCompletion(DifficultyMode nextMode)
     {
-        SetLevelStates(GameManagerScript.Instance.CurrrentMode, LevelStates.Completed);
+        SetLevelStates(GameManagerScript.Instance.CurrentMode, LevelStates.Completed);
         SetLevelStates(nextMode, LevelStates.Unlocked);
 
     }

@@ -9,9 +9,10 @@ public class DestroyZoneScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Track"))
         {
-            other.gameObject.SetActive(false);
+            //other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
             Debug.Log("track destroyed.");
-            trackManager.AcivatingTrack();
+            trackManager.GeneratingTrack();
         }
        
     }

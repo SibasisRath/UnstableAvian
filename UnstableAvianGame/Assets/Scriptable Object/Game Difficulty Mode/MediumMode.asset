@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3cf0037d9efdd4594e8115d26b9896, type: 3}
   m_Name: MediumMode
   m_EditorClassIdentifier: 
-  difficultyMode: 2
+  difficultyMode: 1
   speed: 70
+  themeLength: 6
   powerBoosts: 4
-  Obstacles: 4
+  obstacles: 4
+  scoreToInitiate: 500
