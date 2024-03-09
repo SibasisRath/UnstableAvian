@@ -6,7 +6,7 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private List<DifficultyModeScriptableObject> difficultyModes;
     private static GameManagerScript instance;
     private GameStates gameState;
-    private DifficultyMode currrentMode;
+    private DifficultyMode currentMode;
     private DifficultyModeScriptableObject currentDifficultyModeInfo;
 
     public static GameManagerScript Instance { get => instance; set => instance = value; }
@@ -19,23 +19,24 @@ public class GameManagerScript : MonoBehaviour
     public void SetCurrentDifficultyModeInfo(DifficultyMode difficultyMode)
     {
         currentDifficultyModeInfo = difficultyModes.Find(obj => obj.DifficultyMode == difficultyMode);
+        Debug.Log(currentDifficultyModeInfo.DifficultyMode);
     }
 
-    public DifficultyMode CurrrentMode
+    public DifficultyMode CurrentMode
     {
-        get => currrentMode;
+        get => currentMode;
         set
         {
-            currrentMode = value;
-            SetCurrentDifficultyModeInfo(currrentMode);
-            Debug.Log(currrentMode);
+            currentMode = value;
+            SetCurrentDifficultyModeInfo(currentMode);
         }
     }
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        
         if (Instance == null)
         {
+            DontDestroyOnLoad(gameObject);
             Instance = this;
         }
         else

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public class PlayerMovement : MonoBehaviour
 {
     /*[SerializeField] private GameObject player;*/
-    private Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private float playerSpeed;
     private float currentSpeed;
     private float verticalInput;
@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         currentSpeed = 1;
-        mainCamera = Camera.main;
     }
 
     private void Update()

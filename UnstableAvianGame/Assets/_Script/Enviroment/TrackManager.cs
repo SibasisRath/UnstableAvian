@@ -4,48 +4,49 @@ using UnityEngine;
 public class TrackManager : MonoBehaviour
 {
     [SerializeField] private List<TrackThemeSriptableObject> trackThemeSriptableObjects;
-
-    private List<GameObject> tracks;
-    private TrackGeneratorScript trackGeneratorScript = new TrackGeneratorScript();
+    private DifficultyModeScriptableObject currentDifficultyMode;
 
     private int trackCounter = 0;
 
 
-    private void Awake()
-    {
-        tracks = new List<GameObject>();
-        foreach (TrackThemeSriptableObject trackTheme in trackThemeSriptableObjects)
-        {
-            GameObject trackThemeGameObject = Instantiate(new GameObject(trackTheme.TrackThemeName.ToString()),transform);
-            tracks.AddRange(trackGeneratorScript.TrackGeneration(trackTheme, trackThemeGameObject.transform));
+    private const int totalNumberOfTracks = 4; //Right Now I am keeping this constant But we can make it flexible according to the difficulty modes.
+    private TrackThemeSriptableObject currentTrackTheme;
+    GameObject track;
 
-            
-        }
-        Debug.Log("track count:" + tracks.Count );
+    private void Start()
+    {
+        currentTrackTheme = trackThemeSriptableObjects[0];
     }
 
-    public void AcivatingTrack()
+    private void Update()
     {
-        while (true)
+        currentDifficultyMode = GameManagerScript.Instance.GetCurrentDifficultyModeInfo();
+    }
+
+    public void GeneratingTrack()
+    {
+        if (trackCounter > currentDifficultyMode.ThemeLength)
         {
-            if (trackCounter >= tracks.Count)
+            trackCounter = 0;
+
+            if (trackThemeSriptableObjects.IndexOf(currentTrackTheme) == trackThemeSriptableObjects.Count-1)
             {
-                trackCounter = 0;
-            }
-            if (tracks[trackCounter].activeSelf == true)
-            {
-                trackCounter++;
+                currentTrackTheme = trackThemeSriptableObjects[0];
             }
             else
             {
-                tracks[trackCounter].SetActive(true);
-                TrackThemeSriptableObject trackScriptableObject = GetTrackThemeSriptableObject(tracks[trackCounter].GetComponent<TrackBatchMovementScript>().TrackTheme);
-                trackGeneratorScript.GenerateObstacle(tracks[trackCounter], transform, trackScriptableObject);
-                trackGeneratorScript.GenerateAirBoosts(tracks[trackCounter], transform);
-                tracks[trackCounter].transform.position = transform.position;
-                break;
+                currentTrackTheme = trackThemeSriptableObjects[trackThemeSriptableObjects.IndexOf(currentTrackTheme)+1];
             }
+            
         }
+
+
+        track = GameObject.Instantiate(currentTrackTheme.TrackGameObjects[(int)Random.Range(0, currentTrackTheme.TrackGameObjects.Count)], transform);
+        trackCounter++;
+
+        track.transform.parent = transform;
+        GenerateAirBoosts(track);
+        GenerateObstacle(track);
     }
 
     private TrackThemeSriptableObject GetTrackThemeSriptableObject(TrackThemesEnum trackTheme)
@@ -62,5 +63,41 @@ public class TrackManager : MonoBehaviour
         return resultTheme;
     }
 
+    public void GenerateAirBoosts(GameObject track)
+    {
+        for (int i = 0; i < currentDifficultyMode.PowerBoosts; i++) //here this 3 will be changed according to the difficulty level
+        {
+            GameObject airBoost = GameObject.Instantiate(currentTrackTheme.AirBoost);
+            airBoost.transform.position = GetRandomAriBoostLocation(track);
+            airBoost.transform.parent = track.transform;
+        }
+    }
+
+    public void GenerateObstacle(GameObject track)
+    {
+        for (int i = 0; i < currentDifficultyMode.Obstacles; i++) //here this 4 will be changed according to the difficulty level
+        {
+            GameObject obstacle = GameObject.Instantiate(currentTrackTheme.TrackThemeObstacles[(int)Random.Range(0, currentTrackTheme.TrackThemeObstacles.Count)]);
+            obstacle.transform.position = GetRandomObstaclePosition(track, obstacle);
+            obstacle.transform.parent = track.transform;
+        }
+    }
+
+
+    private Vector3 GetRandomObstaclePosition(GameObject track, GameObject obstacle)
+    {
+        float trackWidth = track.transform.localScale.x * 5;
+        float trackLength = track.transform.localScale.z * 5;
+        Vector3 obstaclePosition = track.transform.position + new Vector3(Random.Range(-trackWidth, trackWidth), Random.Range(0, obstacle.transform.localScale.y/4), Random.Range(-trackLength, trackLength));
+        return obstaclePosition;
+    }
+
+    private Vector3 GetRandomAriBoostLocation(GameObject track)
+    {
+        float trackWidth = track.transform.localScale.x * 2;
+        float trackLength = track.transform.localScale.z * 5;
+        Vector3 obstaclePosition = track.transform.position + new Vector3(Random.Range(-trackWidth, trackWidth), Random.Range(16, 40), Random.Range(-trackLength, trackLength));
+        return obstaclePosition;
+    }
 
 }

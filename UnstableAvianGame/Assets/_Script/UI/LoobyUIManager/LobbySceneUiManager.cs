@@ -9,7 +9,6 @@ public class LobbySceneUiManager : MonoBehaviour
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button backButton;
-    [SerializeField] private Button tutorialButton;
     [SerializeField] private Button easyButton;
     [SerializeField] private Button mediumButton;
     [SerializeField] private Button hardButton;
@@ -31,7 +30,6 @@ public class LobbySceneUiManager : MonoBehaviour
         ButtonSetUp(playButton, OnPlayButtonClicked);
         ButtonSetUp(quitButton, OnQuitButtonClicked);
         ButtonSetUp(backButton, OnBackButtonClicked);
-        ButtonSetUp(tutorialButton, OnTutorialButtonClicked);
         ButtonSetUp(easyButton, OnEasyButtonClicked);
         ButtonSetUp(mediumButton, OnMediumButtonClicked);
         ButtonSetUp(hardButton, OnHardButtonClicked);
@@ -54,10 +52,6 @@ public class LobbySceneUiManager : MonoBehaviour
     private void OnQuitButtonClicked()
     {
         Application.Quit();
-    }
-    private void OnTutorialButtonClicked()
-    {
-       LevelLoader.ModeSelector(DifficultyMode.Tutorial);
     }
     private void OnEasyButtonClicked()
     {
