@@ -11,6 +11,8 @@ public class ExplosionManager : MonoBehaviour
     [SerializeField] private int explosionDelay;
     private Explosions explosionType;
 
+    [SerializeField] private PlayerAirBoostScript playerAirBoostScript;
+
     [SerializeField] private PlayerStateManager playerStateManager;
 
 
@@ -51,7 +53,7 @@ public class ExplosionManager : MonoBehaviour
 
     private IEnumerator Explode()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(explosionDelay);
 
         if (playerStateManager.PlayerState == PlayerStates.Exploding)
         {
@@ -100,7 +102,7 @@ public class ExplosionManager : MonoBehaviour
     private IEnumerator JumpCoroutine()
     {
         Vector3 positionBeforeJump = parent.transform.position;
-        Vector3 positionAfterJump = parent.transform.position + new Vector3(0, 50, 0); // Adjust the jump height as needed
+        Vector3 positionAfterJump = parent.transform.position + new Vector3(0, playerAirBoostScript.GetHeight(), 0); // Adjust the jump height as needed
 
         float elapsedTime = 0f;
         float jumpDuration = 1f; // Adjust the jump duration as needed
@@ -138,5 +140,6 @@ public class ExplosionManager : MonoBehaviour
         // Set the player state back to Alive
         playerStateManager.PlayerState = PlayerStates.Alive;
         Debug.Log("Jump and explosion completed.");
+        playerAirBoostScript.ResetingHeight();
     }
 }

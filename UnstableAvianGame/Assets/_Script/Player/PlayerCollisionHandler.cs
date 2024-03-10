@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCollisionHandler : MonoBehaviour
 {
     [SerializeField] private PlayerLives playerLivesScript;
     [SerializeField] private PlayerStateManager playerStateManagerScript;
+    [SerializeField] private PlayerAirBoostScript playerAirBoostScript;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,6 +13,11 @@ public class PlayerCollisionHandler : MonoBehaviour
             playerLivesScript.PlayerLivesCount -= 1;
             playerStateManagerScript.PlayerState = PlayerStates.Dead;
             Debug.Log("Player has lost a life.");
+        }
+
+        if (other.gameObject.CompareTag("AirBoost"))
+        {
+            playerAirBoostScript.IncreaseingHeight();
         }
     }
 }
