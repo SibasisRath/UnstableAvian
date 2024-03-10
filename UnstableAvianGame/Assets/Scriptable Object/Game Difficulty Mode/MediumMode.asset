@@ -17,4 +17,4 @@ MonoBehaviour:
   themeLength: 6
   powerBoosts: 4
   obstacles: 4
-  scoreToInitiate: 500
+  scoreToInitiate: 700
