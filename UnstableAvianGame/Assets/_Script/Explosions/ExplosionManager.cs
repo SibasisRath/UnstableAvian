@@ -1,8 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class ExplosionManager : MonoBehaviour
 {
+
+    private static int totalExplosionAmount = 0;
+    [SerializeField] private int totalPossibleDestrutionAmount;
+
     [SerializeField] private GameObject parent;
     [SerializeField] private LayerMask obstacle;
     [SerializeField] private float smallExplosionRange;
@@ -15,10 +20,13 @@ public class ExplosionManager : MonoBehaviour
 
     [SerializeField] private PlayerStateManager playerStateManager;
 
+    [SerializeField] private TextMeshProUGUI totalDamageText;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        totalDamageText.text = $"Destruction:\n{totalExplosionAmount}/{totalPossibleDestrutionAmount}";
         InvokeRepeating(nameof(ExplosionProcess), 10, 15);
     }
 
@@ -88,9 +96,18 @@ public class ExplosionManager : MonoBehaviour
             totalDamage += 2;
 
         }
-        Debug.Log($"explosion happened.\ntotal damage {totalDamage}");
+        totalExplosionAmount += totalDamage;
+        
 
-        playerStateManager.PlayerState = PlayerStates.Alive;
+        if (totalPossibleDestrutionAmount < totalExplosionAmount)
+        {
+            GameManagerScript.Instance.GameState = GameStates.Over;
+        }
+
+        totalDamageText.text = $"Destruction:\n{totalExplosionAmount}/{totalPossibleDestrutionAmount}";
+
+        playerStateManager.PlayerState = PlayerStates.Alive; //From player state exploding to player state alive
+
         return totalDamage;
     }
 

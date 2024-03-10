@@ -1,18 +1,18 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 public class PlayerScoreManager : MonoBehaviour
 {
     private float score;
     private DifficultyModeScriptableObject currentDifficultyMode;
     [SerializeField] private TextMeshProUGUI scoreText;
-
-
+    private List<DifficultyModeScriptableObject> difficultyModes;
 
     // Start is called before the first frame update
     void Start()
     {
         score = 0;
-       
+       difficultyModes = GameManagerScript.Instance.GetDifficultyModeScriptableObjects();
     }
 
     // Update is called once per frame
@@ -23,6 +23,11 @@ public class PlayerScoreManager : MonoBehaviour
         {
             score += Time.deltaTime * GetScoreMultiplier(currentDifficultyMode.DifficultyMode);
             UpdateScoreText();
+        }
+
+        if (difficultyModes.IndexOf(currentDifficultyMode) + 1 != difficultyModes.Count && difficultyModes[difficultyModes.IndexOf(currentDifficultyMode) + 1].ScoreToInitiate <= score)
+        {
+            GameManagerScript.Instance.CurrentMode = difficultyModes[difficultyModes.IndexOf(currentDifficultyMode) + 1].DifficultyMode;
         }
     }
 

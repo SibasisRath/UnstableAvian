@@ -162,7 +162,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 206733696}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -760,6 +760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662efe390b657f84e9ddfc99ad3c0b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalPossibleDestrutionAmount: 10
   parent: {fileID: 816203100}
   obstacle:
     serializedVersion: 2
@@ -770,6 +771,7 @@ MonoBehaviour:
   explosionDelay: 3
   playerAirBoostScript: {fileID: 630974360}
   playerStateManager: {fileID: 630974357}
+  totalDamageText: {fileID: 1032349551}
 --- !u!114 &630974357
 MonoBehaviour:
   m_ObjectHideFlags: 0

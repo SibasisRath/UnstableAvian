@@ -17,13 +17,12 @@ public class PlayerLives : MonoBehaviour
         set 
         {
             playerLivesCount = value;
-            livesLeft.text = $"Life: {playerLivesCount}";
-
             if (playerLivesCount <= 0 )
             {
                 playerLivesCount = 0;
                 GameManagerScript.Instance.GameState = GameStates.Over;
             }
+            livesLeft.text = $"Life: {playerLivesCount}";
         }
     }
 

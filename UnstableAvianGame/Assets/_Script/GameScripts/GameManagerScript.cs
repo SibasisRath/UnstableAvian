@@ -12,6 +12,12 @@ public class GameManagerScript : MonoBehaviour
     public static GameManagerScript Instance { get => instance; set => instance = value; }
     public GameStates GameState { get => gameState; set => gameState = value; }
 
+
+    public List<DifficultyModeScriptableObject> GetDifficultyModeScriptableObjects()
+    {
+        return difficultyModes;
+    }
+
     public DifficultyModeScriptableObject GetCurrentDifficultyModeInfo()
     {
         return currentDifficultyModeInfo;
@@ -19,6 +25,7 @@ public class GameManagerScript : MonoBehaviour
     public void SetCurrentDifficultyModeInfo(DifficultyMode difficultyMode)
     {
         currentDifficultyModeInfo = difficultyModes.Find(obj => obj.DifficultyMode == difficultyMode);
+        LevelManagerScript.Instance.SetLevelStates(currentDifficultyModeInfo.DifficultyMode, LevelStates.Unlocked);
         Debug.Log(currentDifficultyModeInfo.DifficultyMode);
     }
 
