@@ -162,7 +162,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 206733696}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -213,8 +213,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 206733696}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.35, z: 0.019999996}
-  m_LocalScale: {x: 20.22, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -13, z: 89.3}
+  m_LocalScale: {x: 85.75, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -599,6 +599,7 @@ GameObject:
   - component: {fileID: 630974357}
   - component: {fileID: 630974358}
   - component: {fileID: 630974359}
+  - component: {fileID: 630974360}
   m_Layer: 0
   m_Name: Player Character
   m_TagString: Untagged
@@ -746,6 +747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerLivesScript: {fileID: 630974359}
   playerStateManagerScript: {fileID: 630974357}
+  playerAirBoostScript: {fileID: 630974360}
 --- !u!114 &630974356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,10 +764,11 @@ MonoBehaviour:
   obstacle:
     serializedVersion: 2
     m_Bits: 128
-  smallExplosionRange: 2
-  midExplosionRange: 4
-  bigExplosionRange: 6
-  explosionDelay: 0
+  smallExplosionRange: 20
+  midExplosionRange: 30
+  bigExplosionRange: 40
+  explosionDelay: 3
+  playerAirBoostScript: {fileID: 630974360}
   playerStateManager: {fileID: 630974357}
 --- !u!114 &630974357
 MonoBehaviour:
@@ -807,6 +810,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerLivesCount: 3
   livesLeft: {fileID: 1481226144}
+--- !u!114 &630974360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630974348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8734fb71f3b1f694b9412f4f6e1a42fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  additionalHeightPerAirBoost: 10
+  airBoostText: {fileID: 1315568646}
 --- !u!1 &672405099
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public class PlayerLives : MonoBehaviour
 
             if (playerLivesCount <= 0 )
             {
+                playerLivesCount = 0;
                 GameManagerScript.Instance.GameState = GameStates.Over;
             }
         }
