@@ -56,7 +56,10 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (gameState == GameStates.Over)
+        {
+            Debug.Log("game over");
+        }
     }
 
 

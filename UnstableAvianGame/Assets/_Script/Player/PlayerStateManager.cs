@@ -5,13 +5,10 @@ using UnityEngine.Events;
 
 public class PlayerStateManager : MonoBehaviour
 {
-    private static PlayerStateManager instance;
-    private static PlayerStates playerState;
+    private PlayerStates playerState;
 
-    public static PlayerStateManager Instance { get => instance; set => instance = value; }
-    public static PlayerStates PlayerState { get => playerState; set => playerState = value; }
-
-
+    [SerializeField] private Collider playerCollider;
+    public PlayerStates PlayerState { get => playerState; set => playerState = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +17,30 @@ public class PlayerStateManager : MonoBehaviour
         {
             PlayerState = PlayerStates.Alive;
         }
+
+        
+    }
+
+    private IEnumerator PlayerDeadSequence()
+    {
+        PlayerState = PlayerStates.Respawnning;
+        playerCollider.enabled = false;
+        Debug.Log("Player death sequence started and collider off.");
+        yield return new WaitForSeconds(1);
+
+        playerCollider.enabled = true;
+        PlayerState = PlayerStates.Alive;
+        Debug.Log("Player death sequence finished and collider on.");
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (PlayerState == PlayerStates.Dead && GameManagerScript.Instance.GameState != GameStates.Over)
+        {
+            StartCoroutine(PlayerDeadSequence());
+        }
     }
 }

@@ -28,7 +28,7 @@ public class PlayerScoreManager : MonoBehaviour
 
     private void UpdateScoreText()
     {
-        scoreText.text = $"{score}";
+        scoreText.text = $"Score:\n{score}";
     }
 
     private float GetScoreMultiplier(DifficultyMode difficultyMode)
