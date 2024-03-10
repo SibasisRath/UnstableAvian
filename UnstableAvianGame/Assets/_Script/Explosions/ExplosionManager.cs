@@ -11,6 +11,8 @@ public class ExplosionManager : MonoBehaviour
     [SerializeField] private int explosionDelay;
     private Explosions explosionType;
 
+    [SerializeField] private PlayerStateManager playerStateManager;
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,7 @@ public class ExplosionManager : MonoBehaviour
 
     public void ExplosionProcess()
     {
-        PlayerStateManager.PlayerState = PlayerStates.Exploding;
+        playerStateManager.PlayerState = PlayerStates.Exploding;
 
         explosionType = RandomExplosionGenerator();
         Debug.Log(explosionType.ToString());
@@ -51,7 +53,7 @@ public class ExplosionManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
 
-        if (PlayerStateManager.PlayerState == PlayerStates.Exploding)
+        if (playerStateManager.PlayerState == PlayerStates.Exploding)
         {
             int totalDamage = ExplosionDamageCalculation(explosionType);
         }
@@ -86,7 +88,7 @@ public class ExplosionManager : MonoBehaviour
         }
         Debug.Log($"explosion happened.\ntotal damage {totalDamage}");
 
-        PlayerStateManager.PlayerState = PlayerStates.Alive;
+        playerStateManager.PlayerState = PlayerStates.Alive;
         return totalDamage;
     }
 
@@ -134,7 +136,7 @@ public class ExplosionManager : MonoBehaviour
         parent.transform.position = positionBeforeJump;
 
         // Set the player state back to Alive
-        PlayerStateManager.PlayerState = PlayerStates.Alive;
+        playerStateManager.PlayerState = PlayerStates.Alive;
         Debug.Log("Jump and explosion completed.");
     }
 }

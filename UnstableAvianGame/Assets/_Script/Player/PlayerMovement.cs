@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
-    /*[SerializeField] private GameObject player;*/
+    [SerializeField] private PlayerStateManager playerStateManager;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float playerSpeed;
     private float currentSpeed;
@@ -26,10 +26,10 @@ public class PlayerMovement : MonoBehaviour
     {
         
         Movement();
-        if (PlayerStateManager.PlayerState == PlayerStates.Exploding && Input.GetKeyDown(KeyCode.Space))
+        if (playerStateManager.PlayerState == PlayerStates.Exploding && Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("You saved.");
-            PlayerStateManager.PlayerState = PlayerStates.Alive;
+            playerStateManager.PlayerState = PlayerStates.Alive;
             jumpAndExplosion.Invoke();
         }
     }
