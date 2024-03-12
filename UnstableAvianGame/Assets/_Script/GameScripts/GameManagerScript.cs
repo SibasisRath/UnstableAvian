@@ -60,12 +60,15 @@ public class GameManagerScript : MonoBehaviour
         Debug.Log("Game started");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (gameState == GameStates.Over)
+        if (gameState == GameStates.Pause || gameState == GameStates.Over)
         {
-            Debug.Log("game over");
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1f;
         }
     }
 

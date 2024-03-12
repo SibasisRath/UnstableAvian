@@ -5,7 +5,7 @@ using TMPro;
 public class ExplosionManager : MonoBehaviour
 {
 
-    private static int totalExplosionAmount = 0;
+    private static int totalExplosionAmount;
     [SerializeField] private int totalPossibleDestrutionAmount;
 
     [SerializeField] private GameObject parent;
@@ -13,7 +13,8 @@ public class ExplosionManager : MonoBehaviour
     [SerializeField] private float smallExplosionRange;
     [SerializeField] private float midExplosionRange;
     [SerializeField] private float bigExplosionRange;
-    [SerializeField] private int explosionDelay;
+    [SerializeField] private float explosionDelay;
+    [SerializeField] private ExplosionUI explosionUI;
     private Explosions explosionType;
 
     [SerializeField] private PlayerAirBoostScript playerAirBoostScript;
@@ -26,6 +27,7 @@ public class ExplosionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        totalExplosionAmount = 0;
         totalDamageText.text = $"Destruction:\n{totalExplosionAmount}/{totalPossibleDestrutionAmount}";
         InvokeRepeating(nameof(ExplosionProcess), 10, 15);
     }
@@ -33,9 +35,9 @@ public class ExplosionManager : MonoBehaviour
     public void ExplosionProcess()
     {
         playerStateManager.PlayerState = PlayerStates.Exploding;
-
         explosionType = RandomExplosionGenerator();
         Debug.Log(explosionType.ToString());
+        explosionUI.display(explosionType, explosionDelay);
         StartCoroutine(Explode());
     }
 
@@ -99,7 +101,7 @@ public class ExplosionManager : MonoBehaviour
         totalExplosionAmount += totalDamage;
         
 
-        if (totalPossibleDestrutionAmount < totalExplosionAmount)
+        if (totalPossibleDestrutionAmount <= totalExplosionAmount)
         {
             GameManagerScript.Instance.GameState = GameStates.Over;
         }
