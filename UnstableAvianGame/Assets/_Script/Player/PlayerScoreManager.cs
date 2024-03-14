@@ -3,7 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 public class PlayerScoreManager : MonoBehaviour
 {
-    private float score;
+    private float score = 0;
     private DifficultyModeScriptableObject currentDifficultyMode;
     [SerializeField] private TextMeshProUGUI scoreText;
     private List<DifficultyModeScriptableObject> difficultyModes;
@@ -21,40 +21,23 @@ public class PlayerScoreManager : MonoBehaviour
         currentDifficultyMode = GameManagerScript.Instance.GetCurrentDifficultyModeInfo();
         if (GameManagerScript.Instance.GameState != GameStates.Pause)
         {
-            score += Time.deltaTime * GetScoreMultiplier(currentDifficultyMode.DifficultyMode);
+            score += Time.deltaTime * currentDifficultyMode.ScoreMultiplier;
             UpdateScoreText();
-        }
+            CheckDifficultyModeChange();
+        }        
+    }
 
-        if (difficultyModes.IndexOf(currentDifficultyMode) + 1 != difficultyModes.Count && difficultyModes[difficultyModes.IndexOf(currentDifficultyMode) + 1].ScoreToInitiate <= score)
+    private void CheckDifficultyModeChange()
+    {
+        int nextModeIndex = difficultyModes.IndexOf(currentDifficultyMode) + 1;
+        if (nextModeIndex < difficultyModes.Count && difficultyModes[nextModeIndex].ScoreToInitiate <= score)
         {
-            GameManagerScript.Instance.CurrentMode = difficultyModes[difficultyModes.IndexOf(currentDifficultyMode) + 1].DifficultyMode;
+            GameManagerScript.Instance.CurrentMode = difficultyModes[nextModeIndex].DifficultyMode;
         }
     }
 
     private void UpdateScoreText()
     {
-        scoreText.text = $"Score:\n{score}";
-    }
-
-    private float GetScoreMultiplier(DifficultyMode difficultyMode)
-    {
-        float scoreMultiplier = 0;
-
-        switch (difficultyMode)
-        {
-            case DifficultyMode.Easy:
-                scoreMultiplier = 1;
-                break;
-            case DifficultyMode.Medium:
-                scoreMultiplier = 2; 
-                break;
-            case DifficultyMode.Hard:
-                scoreMultiplier *= 2;
-                break;
-            default:
-                break;
-        }
-
-        return scoreMultiplier;
+        scoreText.text = $"Score:\n{Mathf.RoundToInt(score)}"; ;
     }
 }

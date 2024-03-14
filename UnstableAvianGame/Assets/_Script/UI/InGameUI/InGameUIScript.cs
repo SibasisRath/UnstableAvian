@@ -6,60 +6,45 @@ public class InGameUIScript : MonoBehaviour
 {
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject gameOverPanel;
-
     [SerializeField] private Button restartButton;
     [SerializeField] private Button mainButton;
     [SerializeField] private Button resumeButton;
 
+    private int mainMenuSceneIndex = 0;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        pausePanel.SetActive(false);
-        gameOverPanel.SetActive(false);
-        restartButton.gameObject.SetActive(false);
-        mainButton.gameObject.SetActive(false);
-        resumeButton.gameObject.SetActive(false);
-
-        restartButton.onClick.AddListener(RestartGame);
-        resumeButton.onClick.AddListener(ResumeMethod);
-        mainButton.onClick.AddListener(BackToMainGame);
+        SetPanelsAndButtonsActive(false);
+        SetupButtonListeners();
+        GameManagerScript.Instance.GameState = GameStates.Running;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            PauseMethod();
+            PauseGame();
         }
+
         if (GameManagerScript.Instance.GameState == GameStates.Over)
         {
-            GameOverMethod();
+            HandleGameOver();
         }
     }
 
-
-    private void PauseMethod()
+    private void PauseGame()
     {
         GameManagerScript.Instance.GameState = GameStates.Pause;
-        pausePanel.SetActive(true);
-        restartButton.gameObject.SetActive(true);
-        mainButton.gameObject.SetActive(true);
-        resumeButton.gameObject.SetActive(true);
+        SetPanelsAndButtonsActive(true);
     }
 
-    private void ResumeMethod()
+    private void ResumeGame()
     {
         GameManagerScript.Instance.GameState = GameStates.Running;
-        pausePanel.SetActive(false);
-        restartButton.gameObject.SetActive(false);
-        mainButton.gameObject.SetActive(false);
-        resumeButton.gameObject.SetActive(false);
+        SetPanelsAndButtonsActive(false);
     }
 
-    private void GameOverMethod()
+    private void HandleGameOver()
     {
         gameOverPanel.SetActive(true);
         restartButton.gameObject.SetActive(true);
@@ -70,14 +55,27 @@ public class InGameUIScript : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         GameManagerScript.Instance.GameState = GameStates.Running;
-        gameOverPanel.SetActive(false);
-        restartButton.gameObject.SetActive(false);
-        mainButton.gameObject.SetActive(false);
+        SetPanelsAndButtonsActive(false);
     }
 
-    private void BackToMainGame()
+    private void ReturnToMainMenu()
     {
-        SceneManager.LoadScene(0);
-       
+        SceneManager.LoadScene(mainMenuSceneIndex);
+    }
+
+    private void SetPanelsAndButtonsActive(bool isActive)
+    {
+        pausePanel.SetActive(isActive);
+        gameOverPanel.SetActive(isActive);
+        restartButton.gameObject.SetActive(isActive);
+        mainButton.gameObject.SetActive(isActive);
+        resumeButton.gameObject.SetActive(isActive);
+    }
+
+    private void SetupButtonListeners()
+    {
+        restartButton.onClick.AddListener(RestartGame);
+        resumeButton.onClick.AddListener(ResumeGame);
+        mainButton.onClick.AddListener(ReturnToMainMenu);
     }
 }

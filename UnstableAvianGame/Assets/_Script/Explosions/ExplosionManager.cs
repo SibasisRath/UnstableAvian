@@ -4,8 +4,10 @@ using TMPro;
 
 public class ExplosionManager : MonoBehaviour
 {
-
+    [Tooltip("If base explosion damage is 'x'. It means in the case of big explosion the outter circle will do this much damage, middle circle will do 2x amount and the inner circle will do 3x amount of damage.")]
+    [SerializeField] private int baseExplosionDamage = 2;
     private static int totalExplosionAmount;
+    [Tooltip("This is the max limit of destruction that can be done to environment. After crossing this limit game over.")]
     [SerializeField] private int totalPossibleDestrutionAmount;
 
     [SerializeField] private GameObject parent;
@@ -13,9 +15,12 @@ public class ExplosionManager : MonoBehaviour
     [SerializeField] private float smallExplosionRange;
     [SerializeField] private float midExplosionRange;
     [SerializeField] private float bigExplosionRange;
-    [SerializeField] private float explosionDelay;
+    [SerializeField] private float explosionWarningDelay = 3f;
+    [SerializeField] private float explosionGap = 15f;
     [SerializeField] private ExplosionUI explosionUI;
     private Explosions explosionType;
+
+    [SerializeField] private float jumpDuration = 1f;
 
     [SerializeField] private PlayerAirBoostScript playerAirBoostScript;
 
@@ -29,28 +34,32 @@ public class ExplosionManager : MonoBehaviour
     {
         totalExplosionAmount = 0;
         totalDamageText.text = $"Destruction:\n{totalExplosionAmount}/{totalPossibleDestrutionAmount}";
-        InvokeRepeating(nameof(ExplosionProcess), 10, 15);
+        InvokeRepeating(nameof(ExplosionProcess), explosionGap, explosionGap);
     }
 
     public void ExplosionProcess()
     {
         playerStateManager.PlayerState = PlayerStates.Exploding;
         explosionType = RandomExplosionGenerator();
-        Debug.Log(explosionType.ToString());
-        explosionUI.display(explosionType, explosionDelay);
+        explosionUI.ShowExplosionWarning(explosionType, explosionWarningDelay);
         StartCoroutine(Explode());
     }
 
     private Explosions RandomExplosionGenerator()
     {
-        int randomExplosionNumber = (int)(Random.Range(1,100));
+        const int lowestNumber = 1;
+        const int highestNumber = 100;
+        const int smallExplosionNumber = (int)(highestNumber / 2);
+        const int middleExplosionNumber = (int)(highestNumber* (4 / 5));
+
+        int randomExplosionNumber = (int)(Random.Range(lowestNumber,highestNumber));
         Explosions explosionType;
 
-        if (randomExplosionNumber<50)
+        if (randomExplosionNumber < highestNumber/2)
         {
             explosionType = Explosions.Small;
         }
-        else if (randomExplosionNumber > 50 && randomExplosionNumber < 80)
+        else if (randomExplosionNumber > smallExplosionNumber && randomExplosionNumber < middleExplosionNumber)
         {
             explosionType = Explosions.Medium;
         }
@@ -63,13 +72,12 @@ public class ExplosionManager : MonoBehaviour
 
     private IEnumerator Explode()
     {
-        yield return new WaitForSeconds(explosionDelay);
+        yield return new WaitForSeconds(explosionWarningDelay);
 
         if (playerStateManager.PlayerState == PlayerStates.Exploding)
         {
             int totalDamage = ExplosionDamageCalculation(explosionType);
         }
-
     }
 
     private int ExplosionDamageCalculation(Explosions explosion)
@@ -79,7 +87,7 @@ public class ExplosionManager : MonoBehaviour
 
         if (explosion == Explosions.Big && Physics.Raycast(transform.position, Vector3.down, out hit, bigExplosionRange, obstacle))
         {
-            totalDamage += 2;
+            totalDamage += baseExplosionDamage;
             explosion = Explosions.Medium;
 
         }
@@ -87,7 +95,7 @@ public class ExplosionManager : MonoBehaviour
 
         if (explosion == Explosions.Medium && Physics.Raycast(transform.position, Vector3.down, out hit, midExplosionRange, obstacle))
         {
-            totalDamage += 2;
+            totalDamage += baseExplosionDamage;
             explosion = Explosions.Small;
 
         }
@@ -95,7 +103,7 @@ public class ExplosionManager : MonoBehaviour
 
         if (explosion == Explosions.Small && Physics.Raycast(transform.position, Vector3.down, out hit, smallExplosionRange, obstacle))
         {
-            totalDamage += 2;
+            totalDamage += baseExplosionDamage;
 
         }
         totalExplosionAmount += totalDamage;
@@ -124,7 +132,6 @@ public class ExplosionManager : MonoBehaviour
         Vector3 positionAfterJump = parent.transform.position + new Vector3(0, playerAirBoostScript.GetHeight(), 0); // Adjust the jump height as needed
 
         float elapsedTime = 0f;
-        float jumpDuration = 1f; // Adjust the jump duration as needed
 
         while (elapsedTime < jumpDuration)
         {
@@ -136,7 +143,6 @@ public class ExplosionManager : MonoBehaviour
 
         // Ensure the jump ends exactly at positionAfterJump
         parent.transform.position = positionAfterJump;
-        Debug.Log("reached the height");
 
         ExplosionDamageCalculation(explosionType);
 
@@ -158,7 +164,6 @@ public class ExplosionManager : MonoBehaviour
 
         // Set the player state back to Alive
         playerStateManager.PlayerState = PlayerStates.Alive;
-        Debug.Log("Jump and explosion completed.");
-        playerAirBoostScript.ResetingHeight();
+        playerAirBoostScript.ResetHeight();
     }
 }

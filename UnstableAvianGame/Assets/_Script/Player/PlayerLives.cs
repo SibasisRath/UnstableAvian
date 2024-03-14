@@ -9,7 +9,7 @@ public class PlayerLives : MonoBehaviour
 
     private void Start()
     {
-        livesLeft.text = $"Life: {playerLivesCount}";
+        UpdateLivesText();
     }
     public int PlayerLivesCount 
     {
@@ -22,8 +22,13 @@ public class PlayerLives : MonoBehaviour
                 playerLivesCount = 0;
                 GameManagerScript.Instance.GameState = GameStates.Over;
             }
-            livesLeft.text = $"Life: {playerLivesCount}";
+            UpdateLivesText();
         }
+    }
+
+    private void UpdateLivesText()
+    {
+        livesLeft.text = $"Life: {playerLivesCount}";
     }
 
 }

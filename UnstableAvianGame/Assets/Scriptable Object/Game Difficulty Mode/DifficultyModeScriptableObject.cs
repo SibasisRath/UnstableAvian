@@ -9,6 +9,7 @@ public class DifficultyModeScriptableObject : ScriptableObject
     [SerializeField] private int powerBoosts;
     [SerializeField] private int obstacles;
     [SerializeField] private float scoreToInitiate;
+    [SerializeField] private float scoreMultiplier;
 
     public DifficultyMode DifficultyMode { get => difficultyMode; set => difficultyMode = value; }
     public float Speed { get => speed; set => speed = value; }
@@ -16,4 +17,5 @@ public class DifficultyModeScriptableObject : ScriptableObject
     public int Obstacles { get => obstacles; set => obstacles = value; }
     public float ThemeLength { get => themeLength; set => themeLength = value; }
     public float ScoreToInitiate { get => scoreToInitiate; set => scoreToInitiate = value; }
+    public float ScoreMultiplier { get => scoreMultiplier; set => scoreMultiplier = value; }
 }

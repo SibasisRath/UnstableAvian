@@ -8,23 +8,29 @@ public class TrackManager : MonoBehaviour
 
     private int trackCounter = 0;
 
-
-    private const int totalNumberOfTracks = 4; //Right Now I am keeping this constant But we can make it flexible according to the difficulty modes.
+    //The tuning of the game has been done and these constants are figured out.
+    private const int obstacleSpawnLocationWidthFactor = 5;
+    private const int obstacleSpawnLocationLengthFactor = 5;
+    private const int airBoostSpawnLocationWidthFactor = 2;
+    private const int airBoostSpawnLocationLengthFactor = 5;
+    private const int airBoostSpawnLowerLimitY = 16;
+    private const int airBoostSpawnUpperLimitY = 40;
     private TrackThemeSriptableObject currentTrackTheme;
-    GameObject track;
+    private GameObject track;
+
+    private GameManagerScript gameManagerScript;
+    
 
     private void Start()
     {
         currentTrackTheme = trackThemeSriptableObjects[0];
-    }
-
-    private void Update()
-    {
-        currentDifficultyMode = GameManagerScript.Instance.GetCurrentDifficultyModeInfo();
+        gameManagerScript = GameManagerScript.Instance;
     }
 
     public void GeneratingTrack()
     {
+        currentDifficultyMode = gameManagerScript.GetCurrentDifficultyModeInfo();
+
         if (trackCounter > currentDifficultyMode.ThemeLength)
         {
             trackCounter = 0;
@@ -36,10 +42,8 @@ public class TrackManager : MonoBehaviour
             else
             {
                 currentTrackTheme = trackThemeSriptableObjects[trackThemeSriptableObjects.IndexOf(currentTrackTheme)+1];
-            }
-            
+            }    
         }
-
 
         track = GameObject.Instantiate(currentTrackTheme.TrackGameObjects[(int)Random.Range(0, currentTrackTheme.TrackGameObjects.Count)], transform);
         trackCounter++;
@@ -49,26 +53,12 @@ public class TrackManager : MonoBehaviour
         GenerateObstacle(track);
     }
 
-    private TrackThemeSriptableObject GetTrackThemeSriptableObject(TrackThemesEnum trackTheme)
-    {
-        TrackThemeSriptableObject resultTheme = null;
-
-        foreach (TrackThemeSriptableObject theme in trackThemeSriptableObjects )
-        {
-            if (theme.TrackThemeName == trackTheme)
-            {
-                resultTheme = theme;
-            }
-        }
-        return resultTheme;
-    }
-
     public void GenerateAirBoosts(GameObject track)
     {
         for (int i = 0; i < currentDifficultyMode.PowerBoosts; i++) //here this 3 will be changed according to the difficulty level
         {
             GameObject airBoost = GameObject.Instantiate(currentTrackTheme.AirBoost);
-            airBoost.transform.position = GetRandomAriBoostLocation(track);
+            airBoost.transform.position = GetRandomAirBoostLocation(track);
             airBoost.transform.parent = track.transform;
         }
     }
@@ -86,17 +76,17 @@ public class TrackManager : MonoBehaviour
 
     private Vector3 GetRandomObstaclePosition(GameObject track, GameObject obstacle)
     {
-        float trackWidth = track.transform.localScale.x * 5;
-        float trackLength = track.transform.localScale.z * 5;
+        float trackWidth = track.transform.localScale.x * obstacleSpawnLocationWidthFactor;
+        float trackLength = track.transform.localScale.z * obstacleSpawnLocationLengthFactor;
         Vector3 obstaclePosition = track.transform.position + new Vector3(Random.Range(-trackWidth, trackWidth), Random.Range(0, obstacle.transform.localScale.y/4), Random.Range(-trackLength, trackLength));
         return obstaclePosition;
     }
 
-    private Vector3 GetRandomAriBoostLocation(GameObject track)
+    private Vector3 GetRandomAirBoostLocation(GameObject track)
     {
-        float trackWidth = track.transform.localScale.x * 2;
-        float trackLength = track.transform.localScale.z * 5;
-        Vector3 obstaclePosition = track.transform.position + new Vector3(Random.Range(-trackWidth, trackWidth), Random.Range(16, 40), Random.Range(-trackLength, trackLength));
+        float trackWidth = track.transform.localScale.x * airBoostSpawnLocationWidthFactor;
+        float trackLength = track.transform.localScale.z * airBoostSpawnLocationLengthFactor;
+        Vector3 obstaclePosition = track.transform.position + new Vector3(Random.Range(-trackWidth, trackWidth), Random.Range(airBoostSpawnLowerLimitY, airBoostSpawnUpperLimitY), Random.Range(-trackLength, trackLength));
         return obstaclePosition;
     }
 

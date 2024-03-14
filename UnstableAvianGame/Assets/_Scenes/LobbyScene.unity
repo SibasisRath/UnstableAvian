@@ -1154,12 +1154,11 @@ MonoBehaviour:
   playButton: {fileID: 549648779}
   quitButton: {fileID: 1855978012}
   backButton: {fileID: 63410230}
-  tutorialButton: {fileID: 0}
   easyButton: {fileID: 731439987}
   mediumButton: {fileID: 634923761}
   hardButton: {fileID: 504868190}
-  mainMenuPannel: {fileID: 17235372}
-  difficultyLevelPannel: {fileID: 966631318}
+  mainMenuPanel: {fileID: 17235372}
+  difficultyLevelPanel: {fileID: 966631318}
 --- !u!1 &731439985
 GameObject:
   m_ObjectHideFlags: 0

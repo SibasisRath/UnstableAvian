@@ -18,3 +18,4 @@ MonoBehaviour:
   powerBoosts: 4
   obstacles: 4
   scoreToInitiate: 700
+  scoreMultiplier: 2
