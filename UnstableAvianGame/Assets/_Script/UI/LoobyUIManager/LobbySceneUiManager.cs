@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -12,10 +11,8 @@ public class LobbySceneUiManager : MonoBehaviour
     [SerializeField] private Button easyButton;
     [SerializeField] private Button mediumButton;
     [SerializeField] private Button hardButton;
-
-    [SerializeField] private GameObject mainMenuPannel;
-    [SerializeField] private GameObject difficultyLevelPannel;
-    
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject difficultyLevelPanel;
 
     private void ButtonSetUp(Button button, UnityAction unityAction)
     {
@@ -28,47 +25,28 @@ public class LobbySceneUiManager : MonoBehaviour
     private void Awake()
     {
         ButtonSetUp(playButton, OnPlayButtonClicked);
-        ButtonSetUp(quitButton, OnQuitButtonClicked);
+        ButtonSetUp(quitButton, Application.Quit);
         ButtonSetUp(backButton, OnBackButtonClicked);
-        ButtonSetUp(easyButton, OnEasyButtonClicked);
-        ButtonSetUp(mediumButton, OnMediumButtonClicked);
-        ButtonSetUp(hardButton, OnHardButtonClicked);
+        ButtonSetUp(easyButton, () => LevelLoader.ModeSelector(DifficultyMode.Easy));
+        ButtonSetUp(mediumButton, () => LevelLoader.ModeSelector(DifficultyMode.Medium));
+        ButtonSetUp(hardButton, () => LevelLoader.ModeSelector(DifficultyMode.Hard));
     }
 
     private void Start()
     {
-        difficultyLevelPannel.SetActive(false);
-        mainMenuPannel.SetActive(true);
-        playButton.gameObject.SetActive(true);
-        quitButton.gameObject.SetActive(true);
+        mainMenuPanel.SetActive(true);
+        difficultyLevelPanel.SetActive(false);
     }
 
     private void OnPlayButtonClicked()
     {
-        mainMenuPannel.SetActive(false);
-        difficultyLevelPannel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+        difficultyLevelPanel.SetActive(true);
     }
 
-    private void OnQuitButtonClicked()
-    {
-        Application.Quit();
-    }
-    private void OnEasyButtonClicked()
-    {
-        LevelLoader.ModeSelector(DifficultyMode.Easy);
-    }
-    private void OnMediumButtonClicked()
-    {
-        LevelLoader.ModeSelector(DifficultyMode.Medium);
-    }
-
-    private void OnHardButtonClicked()
-    {
-        LevelLoader.ModeSelector(DifficultyMode.Hard);
-    }
     private void OnBackButtonClicked()
     {
-        mainMenuPannel.SetActive(true);
-        difficultyLevelPannel.SetActive(false);
+        mainMenuPanel.SetActive(true);
+        difficultyLevelPanel.SetActive(false);
     }
 }

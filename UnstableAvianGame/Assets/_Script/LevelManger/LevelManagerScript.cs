@@ -5,7 +5,7 @@ public class LevelManagerScript : MonoBehaviour
     private static LevelManagerScript instance;
     private const DifficultyMode defaulEasyLevel = DifficultyMode.Easy;
 
-    public static LevelManagerScript Instance { get { return instance; } }
+    public static LevelManagerScript Instance => instance;
 
     private void Awake()
     {

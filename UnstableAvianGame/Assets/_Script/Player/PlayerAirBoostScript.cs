@@ -2,18 +2,26 @@ using UnityEngine;
 using TMPro;
 public class PlayerAirBoostScript : MonoBehaviour
 {
-    private static int height = 0;
+    private int height = 0;
     [SerializeField] private int additionalHeightPerAirBoost = 4;
     [SerializeField] private TextMeshProUGUI airBoostText;
 
-   public void IncreaseingHeight()
+
+    private void Start()
     {
-        height += additionalHeightPerAirBoost;
+        ResetHeight();
     }
 
-    public void ResetingHeight() 
+    public void IncreaseHeight()
+    {
+        height += additionalHeightPerAirBoost;
+        UpdateHeightText();
+    }
+
+    public void ResetHeight() 
     {
         height = 0;
+        UpdateHeightText();
     }
 
     public int GetHeight()
@@ -21,16 +29,8 @@ public class PlayerAirBoostScript : MonoBehaviour
         return height;
     }
 
-    private void Start()
-    {
-        height = 0;
-        airBoostText.text = $"Jump Force:\n{height}";
-    }
-
-    private void Update()
+    private void UpdateHeightText()
     {
         airBoostText.text = $"Jump Force:\n{height}";
     }
-
-
 }

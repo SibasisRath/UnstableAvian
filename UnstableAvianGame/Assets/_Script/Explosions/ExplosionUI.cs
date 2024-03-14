@@ -3,37 +3,34 @@ using TMPro;
 
 public class ExplosionUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI blastWaring;
+    [SerializeField] private TextMeshProUGUI blastWarningText;
     private Explosions explosionType;
     private float timer = 0;
+    [SerializeField] private PlayerStateManager playerStateManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        blastWaring.enabled = false;        
+        blastWarningText.enabled = false; 
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer = Mathf.Clamp(timer, 0f, Mathf.Infinity);
-
         timer -= Time.deltaTime;
-
         
-
-        if (timer > 0)
+        if (timer > 0 && playerStateManager.PlayerState == PlayerStates.Exploding)
         {
-            blastWaring.enabled = true;
+            blastWarningText.enabled = true;
         }
         else
         {
-            blastWaring.enabled = false;
+            blastWarningText.enabled = false;
         }
 
-        blastWaring.text = explosionType.ToString() + ":\n" + Mathf.CeilToInt(timer).ToString();
+        blastWarningText.text = explosionType.ToString() + ":\n" + Mathf.CeilToInt(timer).ToString();
     }
-    public void display(Explosions explosions, float seconds)
+    public void ShowExplosionWarning(Explosions explosions, float seconds)
     {
         explosionType = explosions;
         timer = seconds; 

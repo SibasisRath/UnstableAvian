@@ -817,9 +817,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStateManager: {fileID: 630974357}
   mainCamera: {fileID: 963194227}
-  playerSpeed: 5
+  playerSpeed: 1
   horizontalOffset: 0.1
   verticalOffset: 0.1
+  jumpKey: 32
   jumpAndExplosion:
     m_PersistentCalls:
       m_Calls:
@@ -862,6 +863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662efe390b657f84e9ddfc99ad3c0b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseExplosionDamage: 2
   totalPossibleDestrutionAmount: 10
   parent: {fileID: 816203100}
   obstacle:
@@ -870,8 +872,10 @@ MonoBehaviour:
   smallExplosionRange: 20
   midExplosionRange: 30
   bigExplosionRange: 40
-  explosionDelay: 3
+  explosionWarningDelay: 3
+  explosionGap: 15
   explosionUI: {fileID: 630974361}
+  jumpDuration: 1
   playerAirBoostScript: {fileID: 630974360}
   playerStateManager: {fileID: 630974357}
   totalDamageText: {fileID: 1032349551}
@@ -941,7 +945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba30ca1028a6cf641afe395e220ee189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blastWaring: {fileID: 1169581151}
+  blastWarningText: {fileID: 1169581151}
+  playerStateManager: {fileID: 630974357}
 --- !u!1 &652131596
 GameObject:
   m_ObjectHideFlags: 0

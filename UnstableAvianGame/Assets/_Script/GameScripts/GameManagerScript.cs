@@ -12,6 +12,18 @@ public class GameManagerScript : MonoBehaviour
     public static GameManagerScript Instance { get => instance; set => instance = value; }
     public GameStates GameState { get => gameState; set => gameState = value; }
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     public List<DifficultyModeScriptableObject> GetDifficultyModeScriptableObjects()
     {
@@ -26,7 +38,6 @@ public class GameManagerScript : MonoBehaviour
     {
         currentDifficultyModeInfo = difficultyModes.Find(obj => obj.DifficultyMode == difficultyMode);
         LevelManagerScript.Instance.SetLevelStates(currentDifficultyModeInfo.DifficultyMode, LevelStates.Unlocked);
-        Debug.Log(currentDifficultyModeInfo.DifficultyMode);
     }
 
     public DifficultyMode CurrentMode
@@ -38,28 +49,7 @@ public class GameManagerScript : MonoBehaviour
             SetCurrentDifficultyModeInfo(currentMode);
         }
     }
-    private void Awake()
-    {
-        
-        if (Instance == null)
-        {
-            DontDestroyOnLoad(gameObject);
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-
-        GameState = GameStates.Running;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log("Game started");
-    }
-
+ 
     void Update()
     {
         if (gameState == GameStates.Pause || gameState == GameStates.Over)

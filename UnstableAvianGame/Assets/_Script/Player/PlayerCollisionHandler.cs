@@ -8,16 +8,35 @@ public class PlayerCollisionHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Obstacle"))
+        if (other.CompareTag("Obstacle"))
         {
-            playerLivesScript.PlayerLivesCount -= 1;
-            playerStateManagerScript.PlayerState = PlayerStates.Dead;
-            Debug.Log("Player has lost a life.");
+            HandleObstacleCollision();
         }
 
-        if (other.gameObject.CompareTag("AirBoost"))
+        if (other.CompareTag("AirBoost"))
         {
-            playerAirBoostScript.IncreaseingHeight();
+            HandleAirBoostCollision();
+        }
+    }
+
+    private void HandleObstacleCollision()
+    {
+        if (playerLivesScript != null)
+        {
+            playerLivesScript.PlayerLivesCount--;
+        }
+
+        if (playerStateManagerScript != null)
+        {
+            playerStateManagerScript.PlayerState = PlayerStates.Dead;
+        }
+    }
+
+    private void HandleAirBoostCollision()
+    {
+        if (playerAirBoostScript != null)
+        {
+            playerAirBoostScript.IncreaseHeight();
         }
     }
 }
