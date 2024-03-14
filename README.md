@@ -4,7 +4,7 @@ Game jam theme: Do No Harm
 
 <p>
 Story:<br>
-There is a bird in a jungle. It has a unique power which is, it can create explosion arround itself. But there is an issue. It has not learnt how to control the size or timing of the explosion. So whenever it feels like it is going to explode. It starts flying. While flying it has 3 purpose. First to avoid trees, second collect a special type of food which helps to do high jumps in air and third to jump befor explosion.
+There is a bird in a jungle. It has a unique power which is, it can create explosion arround itself. But there is an issue. It has not learnt how to control the size or timing of the explosion. So whenever it feels like it is going to explode. It starts flying. While flying it has 3 purpose. First to avoid trees, second collect a special type of food which helps to do high jumps in air and third to jump before explosion.
 </p>
 
 <p>
